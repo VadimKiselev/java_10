@@ -5,229 +5,128 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RadioTest {
-    Radio volume = new Radio();
-    Radio station = new Radio();
+    Radio radio = new Radio();
+
+    /* Установка количества радиостанций */
 
     @Test
-    public void shouldRadio() {
-        Radio volume = new Radio();
-
-        Radio volume2 = new Radio(15, 0, 100, true);
-
-        Radio volume3 = new Radio(0, 0, 9);
-
+    void shouldSpecifyStationQuantityPositive() {
+        Radio radio = new Radio();
+        radio.setStationsQuantity(1);
+        assertEquals(1, radio.getStationsQuantity());
     }
 
     @Test
-    public void shouldIncreaseVolumeOutOfRangeMax() {
-
-        volume.setIncreaseVolume(101);
-        int expected = 0;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
+    void shouldSpecifyStationQuantityNegative() {
+        Radio radio = new Radio();
+        radio.setStationsQuantity(10);
+        assertEquals(10, radio.getStationsQuantity());
     }
 
     @Test
-    public void shouldIncreaseVolumeMax() {
+    void shouldSpecifyStationQuantityNegative2() {
+        Radio radio = new Radio();
+        radio.setStationsQuantity(-1);
+        assertEquals(10, radio.getStationsQuantity());
+    }
 
-        volume.setIncreaseVolume(100);
-        int expected = 100;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
+    /* Установка номера радиостанции при количестве радиостанций по умолчанию */
+
+    @Test
+    void shouldSpecifyStationWithDefaultQuantityPositive() {
+        Radio radio = new Radio();
+        int expected = 10;
+        int actual = radio.getStationsQuantity();
+        assertEquals(expected,actual);
     }
 
     @Test
-    public void shouldIncreaseVolumeMin() {
-
-        volume.setIncreaseVolume(0);
-        int expected = 0;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
+    void shouldSpecifyStationWithDefaultQuantityNegative() {
+        radio.setStation(11);
+        assertEquals(0, radio.getStation());
     }
 
     @Test
-    public void shouldIncreaseVolumeOutOfRangeMin() {
+    void shouldSpecifyStationWithDefaultQuantityNegative2() {
+        radio.setStation(-1);
+        assertEquals(0, radio.getStation());
+    }
 
-        volume.setIncreaseVolume(-1);
-        int expected = 0;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
+    /* Установка номера радиостанции при собственном количестве радиостанций */
+
+    @Test
+    void shouldSpecifyStationWithCustomQuantityPositive() {
+        Radio radio = new Radio("radio",120);
+        radio.setStationsQuantity(60);
+        radio.setStation(30);
+        assertEquals(30, radio.getStation());
     }
 
     @Test
-    public void shouldIncreaseVolumeInOfRange() {
-
-        volume.setIncreaseVolume(5);
-        int expected = 5;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
+    void shouldSpecifyStationWithCustomQuantityNegative() {
+        Radio radio = new Radio("radio",120);
+        radio.setStationsQuantity(60);
+        radio.setStation(61);
+        assertEquals(0, radio.getStation());
     }
 
     @Test
-    public void shouldCurrentStation() {
+    void shouldSpecifyStationWithCustomQuantityNegative2() {
+        Radio radio = new Radio("radio",120);
+        radio.setStationsQuantity(60);
+        radio.setStation(-1);
+        assertEquals(0, radio.getStation());
+    }
 
-        station.setCurrentStation(5);
-        int expected = 5;
-        int actual = station.getCurrentStation();
-        assertEquals(expected, actual);
+    /* Переключение радиостанций */
+
+    @Test
+    void shouldSwitchStationUpToRoundDefault() {
+        Radio radio = new Radio("ThroughMax", 9);
+        radio.switchStationUp(); // 9~0
+        radio.switchStationUp(); // 0~1
+        assertEquals(2, radio.getStation());
     }
 
     @Test
-    public void shouldCurrentStationOutOfRangeMax() {
+    void shouldSwitchStationDownToRoundDefault() {
+        Radio radio = new Radio("ThroughMin", 1);
+        radio.switchStationDown(); // 1~0
+        radio.switchStationDown(); // 0~9
+        assertEquals(0, radio.getStation());
+    }
 
-        station.setCurrentStation(10);
-        int expected = 0;
-        int actual = station.getCurrentStation();
-        assertEquals(expected, actual);
+    /* Регулировка громкости */
+
+    @Test
+    void shouldIncreaseVolumeToThreshold() {
+        Radio radio = new Radio();
+        radio.setVolume(99);
+        radio.increaseVolume(); // 99~100
+        radio.increaseVolume(); // 100~100
+        assertEquals(100, radio.getVolume());
     }
 
     @Test
-    public void shouldCurrentStationOutOfRangeMin() {
+    void shouldDecreaseVolumeToThreshold() {
+        Radio radio = new Radio();
+        radio.decreaseVolume(); // 1~0
+        radio.decreaseVolume(); // 0~0
+        assertEquals(0, radio.getVolume());
+    }
 
-        station.setCurrentStation(-1);
-        int expected = 9;
-        int actual = station.getCurrentStation();
-        assertEquals(expected, actual);
+    /* Тесты для полного покрытия */
+
+    @Test
+    void shouldSetVolumeNegative() {
+        Radio radio = new Radio();
+        assertEquals(0, radio.getVolume());
     }
 
     @Test
-    public void shouldIncreaseVolumeByOneForward() {
-
-        volume.setIncreaseVolume(100);
-        volume.increaseVolumeByOneForward();
-        int expected = 100;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldIncreaseVolumeByOneForwardBonder() {
-
-        volume.setIncreaseVolume(0);
-        volume.increaseVolumeByOneForward();
-        int expected = 1;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldIncreaseVolumeByOneForwardBorderMin() {
-
-        volume.setIncreaseVolume(-1);
-        volume.increaseVolumeByOneForward();
-        int expected = 1;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldIncreaseVolumeByOneForwardBorderMax() {
-
-        volume.setIncreaseVolume(100);
-        volume.increaseVolumeByOneForward();
-        int expected = 100;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldIncreaseVolumeByOneForwardAverage() {
-
-        volume.setIncreaseVolume(5);
-        volume.increaseVolumeByOneForward();
-        int expected = 6;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldIncreaseVolumeByOneBack() {
-
-        volume.setIncreaseVolume(1);
-        volume.increaseVolumeByOneBack();
-        int expected = 0;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldIncreaseVolumeByOneBackBorderMax() {
-
-        volume.setIncreaseVolume(100);
-        volume.increaseVolumeByOneBack();
-        int expected = 99;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldIncreaseVolumeByOneBackBorderMin() {
-
-        volume.setIncreaseVolume(0);
-        volume.increaseVolumeByOneBack();
-        int expected = 0;
-        int actual = volume.getIncreaseVolume();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldCurrentStationByOneForward() {
-
-        station.setCurrentStation(7);
-        station.currentStationByOneForward();
-        int expected = 8;
-        int actual = station.getCurrentStation();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldCurrentStationByOneForwardBorderMin() {
-
-        station.setCurrentStation(0);
-        station.currentStationByOneForward();
-        int expected = 1;
-        int actual = station.getCurrentStation();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldCurrentStationByOneForwardBorderMax() {
-
-        station.setCurrentStation(9);
-        station.currentStationByOneForward();
-        int expected = 9;
-        int actual = station.getCurrentStation();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldCurrentStationByOneBack() {
-
-        station.setCurrentStation(7);
-        station.currentStationByOneBack();
-        int expected = 6;
-        int actual = station.getCurrentStation();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldCurrentStationByOneBackBorderMax() {
-
-        station.setCurrentStation(9);
-        station.currentStationByOneBack();
-        int expected = 8;
-        int actual = station.getCurrentStation();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldCurrentStationByOneBackBorderMin() {
-
-        station.setCurrentStation(0);
-        station.currentStationByOneBack();
-        int expected = 0;
-        int actual = station.getCurrentStation();
-        assertEquals(expected, actual);
+    void shouldSetVolumeNegative2() {
+        Radio radio = new Radio();
+        assertEquals(0, radio.getVolume());
     }
 
 }

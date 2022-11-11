@@ -1,100 +1,91 @@
 package ru.netology;
-
 public class Radio {
-    private int increaseVolume;
-    private int currentStation;
-    private int minVolume = 0;
-    private int maxVolume = 100;
-    private int minStation = 0;
-    private int maxStation = 9;
-    private boolean on;
+    private String radioName;
+    private int station;
+    private int stationsQuantity = 9;
+    private int stationMin = 0;
+    private int volume;
+    private int volumeMax = 100;
 
-    public Radio() {   }
 
-    public Radio(int increaseVolume, int minVolume, int maxVolume, boolean on) {
-        this.increaseVolume = increaseVolume;
-        this.minVolume = minVolume;
-        this.maxVolume = maxVolume;
-        this.on = on;
+    public Radio() {
+        setStationsQuantity(10);
     }
 
-    public Radio(int currentStation, int minStation, int maxStation) {
-        this.currentStation = currentStation;
-        this.minStation = minStation;
-        this.maxStation = maxStation;
+    public Radio(String radioName, int station) {
+        this.radioName = radioName;
+        setStationsQuantity(station);
     }
 
-    public Radio(int increaseVolume, int currentStation) {
-        this.increaseVolume = increaseVolume;
-        this.currentStation = currentStation;
-    }
 
-    public int getMaxVolume() {
-        return maxVolume;
-    }
-
-    public int getMaxStation() {
-        return maxStation;
-    }
-
-    public int getMinStation() {
-        return minStation;
-    }
-
-    public int getMinVolume() {
-        return minVolume;
-    }
-
-    public int getIncreaseVolume() {
-        return increaseVolume;
-    }
-
-    public void setIncreaseVolume(int increaseVolume) {
-        if (increaseVolume > maxVolume) {
+    public void setStationsQuantity(int stationsQuantity) {
+        if (stationsQuantity < stationMin) {
             return;
         }
-        if (increaseVolume < minVolume) {
+        this.stationsQuantity = stationsQuantity;
+    }
+
+    public void setStation(int station) {
+        if (station > stationsQuantity) {
             return;
         }
-        this.increaseVolume = increaseVolume;
-    }
-
-    public int getCurrentStation() {
-        return currentStation;
-    }
-
-    public void setCurrentStation(int currentStation) {
-        if (currentStation > maxStation) {
-            currentStation = minStation;
+        if (station < stationMin) {
+            return;
         }
-        if (currentStation < minStation) {
-            currentStation = maxStation;
-        }
-        this.currentStation = currentStation;
+        this.station = station;
     }
 
-    public void currentStationByOneForward() {
-        if (currentStation < maxStation) {
-            setCurrentStation(currentStation + 1);
+    public void setVolume(int volume) {
+        if (volume > volumeMax) {
+            return;
+        } else if (volume < 0) {
+            return;
         }
+        this.volume = volume;
     }
 
-    public void currentStationByOneBack() {
-        if (currentStation > minStation) {
-            setCurrentStation(currentStation - 1);
+
+    public void switchStationUp() {
+        if (station == stationsQuantity) {
+            station = stationMin;
+            return;
         }
+        station++;
     }
 
-    public void increaseVolumeByOneForward() {
-        if (increaseVolume < maxVolume) {
-            setIncreaseVolume(increaseVolume + 1);
+    public void switchStationDown() {
+        if (station == stationMin) {
+            station = stationsQuantity;
+            return;
         }
+        station--;
     }
 
-    public void increaseVolumeByOneBack() {
-        if (increaseVolume > minVolume) {
-            setIncreaseVolume(increaseVolume - 1);
+
+    public void increaseVolume() {
+        if (volume == volumeMax) {
+            return;
         }
+        setVolume(++volume);
     }
 
+    public void decreaseVolume() {
+        if (volume == 0) {
+            return;
+        }
+        setVolume(--volume);
+    }
+
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public int getStation() {
+        return station;
+    }
+
+    public int getStationsQuantity() {
+        return stationsQuantity;
+    }
 }
