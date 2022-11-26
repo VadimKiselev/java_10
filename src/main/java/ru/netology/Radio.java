@@ -1,35 +1,45 @@
 package ru.netology;
-public class Radio {
-    private String radioName;
-    private int station;
-    private int stationsQuantity = 9;
-    private int stationMin = 0;
-    private int volume;
-    private int volumeMax = 100;
 
+public class Radio {
+    protected String radioName;
+    protected int station;
+    protected int volume;
+    protected int volumeMax;
+    protected int maxStation;
+    protected int minStation;
+
+    {
+        minStation = 0;
+        volumeMax = 100;
+    }
 
     public Radio() {
-        setStationsQuantity(10);
+        this.maxStation = 9;
+
+    }
+
+    public Radio(int station) {
+        this.maxStation = station - 1;
     }
 
     public Radio(String radioName, int station) {
         this.radioName = radioName;
-        setStationsQuantity(station);
+        setMaxStation(station);
     }
 
 
-    public void setStationsQuantity(int stationsQuantity) {
-        if (stationsQuantity < stationMin) {
+    public void setMaxStation(int maxStation) {
+        if (maxStation < minStation) {
             return;
         }
-        this.stationsQuantity = stationsQuantity;
+        this.maxStation = maxStation;
     }
 
     public void setStation(int station) {
-        if (station > stationsQuantity) {
+        if (station > maxStation) {
             return;
         }
-        if (station < stationMin) {
+        if (station < minStation) {
             return;
         }
         this.station = station;
@@ -46,16 +56,16 @@ public class Radio {
 
 
     public void switchStationUp() {
-        if (station == stationsQuantity) {
-            station = stationMin;
+        if (station == maxStation) {
+            station = minStation;
             return;
         }
         station++;
     }
 
     public void switchStationDown() {
-        if (station == stationMin) {
-            station = stationsQuantity;
+        if (station == minStation) {
+            station = maxStation;
             return;
         }
         station--;
@@ -85,7 +95,7 @@ public class Radio {
         return station;
     }
 
-    public int getStationsQuantity() {
-        return stationsQuantity;
+    public int getMaxStation() {
+        return maxStation;
     }
 }
